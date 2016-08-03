@@ -16,10 +16,10 @@ const createToken = user => {
   return jwt.sign(_.omit(user, 'password'), config.secret, { expiresIn: 60 * 60 * 5 });
 }
 
-const createFamilyToken = user => {
-  let id = (Math.random().toString(36)+'00000000000000000').slice(2, N+2);
+const createFamilyKey = user => {
+  let id = (Math.random().toString(36)+'00000000000000000').slice(2, 5 + 2);
 
-  console.log("ID: " + id);
+  return user.familyName + id;
 }
 
 const getUserScheme = req => {
@@ -47,26 +47,26 @@ const getUserScheme = req => {
   }
 }
 
-app.post('/users/signup', (req, res) => {
+app.post('/family/create', (req, res) => {
 
   const userScheme = getUserScheme(req);
 
-  if (!userScheme.username || !req.body.password) {
-    return res.status(400).send("Missing username or password.");
+  if (!userScheme.username || !req.body.password || !req.body.familyName) {
+    return res.status(400).send("Missing username or password or family name.");
   }
 
   if (_.find(users, userScheme.userSearch)) {
    return res.status(400).send("That username is taken.");
   }
 
-  let profile = _.pick(req.body, userScheme.type, 'password', 'extra');
+  let profile = _.pick(req.body, userScheme.type, 'password', 'familyName', 'extra');
   profile.id = _.max(users, 'id').id + 1;
 
   users.push(profile);
 
   res.status(201).send({
     id_token: createToken(profile),
-    family_token: createFamilyToken(profile)
+    family_token: createFamilyKey(profile)
   });
 });
 

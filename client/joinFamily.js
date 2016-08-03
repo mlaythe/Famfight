@@ -16,16 +16,17 @@ const Form = t.form.Form;
 
 const Person = t.struct({
   username: t.String,
-  password: t.String
+  password: t.String,
+  familyKey: t.String
 });
 
 const options = {};
 
-export default class Login extends Component {
+export default class joinFamily extends Component {
   constructor() {
     super();
 
-    this._userLogin = this._userLogin.bind(this);
+    this._joinFamily = this._joinFamily.bind(this);
   }
 
   async _onValueChange(item, selectedValue) {
@@ -36,11 +37,11 @@ export default class Login extends Component {
     }
   }
 
-  _userLogin() {
+  _joinFamily() {
     let value = this.refs.form.getValue();
 
     if (value) { // if validation fails, value will be null
-      fetch("http://localhost:8080/sessions/create", {
+      fetch("http://localhost:8080/family/join", {
         method: "POST",
         headers: {
           'Accept': 'application/json',
@@ -54,10 +55,10 @@ export default class Login extends Component {
       .then( response => response.json())
       .then( responseData => {
         this._onValueChange(STORAGE_KEY, responseData.id_token);
-        AlertIOS.alert("Login Successful!");
+        AlertIOS.alert("Signup Successful!");
       })
       .catch( err => {
-        console.log("Login error: " + err);
+        console.log("Signup error: " + err);
       })
       .done();
     }
@@ -67,9 +68,6 @@ export default class Login extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.row}>
-          <Text style={styles.title}>Welcome to Famfight</Text>
-        </View>
-        <View style={styles.row}>
           <Form
             ref="form"
             type={Person}
@@ -77,14 +75,8 @@ export default class Login extends Component {
           />
         </View>
         <View style={styles.row}>
-          <TouchableHighlight style={styles.button} onPress={this._userLogin} underlayColor='#99d9f4'>
-            <Text style={styles.buttonText}>Login</Text>
-          </TouchableHighlight>
-          <TouchableHighlight style={styles.button} onPress={Actions.createFamily} underlayColor='#99d9f4'>
-            <Text style={styles.buttonText}>Create Family</Text>
-          </TouchableHighlight>
-          <TouchableHighlight style={styles.button} onPress={Actions.joinFamily} underlayColor='#99d9f4'>
-            <Text style={styles.buttonText}>Join Family</Text>
+          <TouchableHighlight style={styles.button} onPress={this._joinFamily} underlayColor='#99d9f4'>
+            <Text style={styles.buttonText}>Signup</Text>
           </TouchableHighlight>
         </View>
       </View>
