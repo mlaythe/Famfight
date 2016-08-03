@@ -16,6 +16,12 @@ const createToken = user => {
   return jwt.sign(_.omit(user, 'password'), config.secret, { expiresIn: 60 * 60 * 5 });
 }
 
+const createFamilyToken = user => {
+  let id = (Math.random().toString(36)+'00000000000000000').slice(2, N+2);
+
+  console.log("ID: " + id);
+}
+
 const getUserScheme = req => {
   let username,
       type,
@@ -41,7 +47,7 @@ const getUserScheme = req => {
   }
 }
 
-app.post('/users', (req, res) => {
+app.post('/users/signup', (req, res) => {
 
   const userScheme = getUserScheme(req);
 
@@ -59,7 +65,8 @@ app.post('/users', (req, res) => {
   users.push(profile);
 
   res.status(201).send({
-    id_token: createToken(profile)
+    id_token: createToken(profile),
+    family_token: createFamilyToken(profile)
   });
 });
 

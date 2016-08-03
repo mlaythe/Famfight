@@ -18,7 +18,8 @@
     "morgan": "1.2.3",
     "react": "15.2.1",
     "react-native": "0.30.0",
-    "react-native-button": "1.6.0",
+    "react-native-crypto": "^2.0.1",
+    "react-native-router-flux": "^3.32.0",
     "tcomb-form-native": "0.6.0"
   },
   "devDependencies": {
