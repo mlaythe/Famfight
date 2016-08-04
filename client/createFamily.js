@@ -57,7 +57,7 @@ export default class createFamily extends Component {
       .then( responseData => {
         this._onValueChange(STORAGE_KEY, responseData.id_token);
         AlertIOS.alert("Signup Successful!");
-        console.log("family key: " + responseData.family_token);
+        console.log("family key: " + responseData.family_key);
       })
       .catch( err => {
         console.log("Signup error: " + err);

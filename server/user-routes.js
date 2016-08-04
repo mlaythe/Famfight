@@ -12,8 +12,18 @@ const users = [{
   password: '123'
 }];
 
-const createToken = user => {
-  return jwt.sign(_.omit(user, 'password'), config.secret, { expiresIn: 60 * 60 * 5 });
+const createAdminToken = (user, key) => {
+  user = _.omit(user, 'password');
+  user.admin = true;
+  user.key = key;
+  return jwt.sign(user, config.secret, { expiresIn: 60 * 60 * 5 });
+}
+
+const createToken = (user, key) => {
+  user = _.omit(user, 'password');
+  user.admin = false;
+  user.key = key;
+  return jwt.sign(user, config.secret, { expiresIn: 60 * 60 * 5 });
 }
 
 const createFamilyKey = user => {
@@ -64,9 +74,35 @@ app.post('/family/create', (req, res) => {
 
   users.push(profile);
 
+  let familyKey = createFamilyKey(profile);
+
   res.status(201).send({
-    id_token: createToken(profile),
-    family_token: createFamilyKey(profile)
+    id_token: createAdminToken(profile, familyKey),
+    family_key: familyKey
+  });
+});
+
+app.post('/family/join', (req, res) => {
+
+  const userScheme = getUserScheme(req);
+
+  if (!userScheme.username || !req.body.password || !req.body.familyName) {
+    return res.status(400).send("Missing username or password or family name.");
+  }
+
+  if (_.find(users, userScheme.userSearch)) {
+   return res.status(400).send("That username is taken.");
+  }
+
+  let profile = _.pick(req.body, userScheme.type, 'password', 'familyKey', 'extra');
+  profile.id = _.max(users, 'id').id + 1;
+
+  users.push(profile);
+
+  let familyKey = createFamilyKey(profile);
+
+  res.status(201).send({
+    id_token: createToken(profile, key)
   });
 });
 

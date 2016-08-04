@@ -50,6 +50,7 @@ export default class joinFamily extends Component {
         body: JSON.stringify({
           username: value.username,
           password: value.password,
+          familyKey: value.familyKey
         })
       })
       .then( response => response.json())
