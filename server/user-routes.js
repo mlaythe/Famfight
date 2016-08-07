@@ -83,11 +83,11 @@ app.post('/family/create', (req, res) => {
 });
 
 app.post('/family/join', (req, res) => {
-
+  
   const userScheme = getUserScheme(req);
 
-  if (!userScheme.username || !req.body.password || !req.body.familyName) {
-    return res.status(400).send("Missing username or password or family name.");
+  if (!userScheme.username || !req.body.password || !req.body.familyKey) {
+    return res.status(400).send("Missing username or password or family key.");
   }
 
   if (_.find(users, userScheme.userSearch)) {
@@ -102,7 +102,7 @@ app.post('/family/join', (req, res) => {
   let familyKey = createFamilyKey(profile);
 
   res.status(201).send({
-    id_token: createToken(profile, key)
+    id_token: createToken(profile, familyKey)
   });
 });
 
