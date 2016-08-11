@@ -41,8 +41,8 @@ export default class createFamily extends Component {
     let value = this.refs.form.getValue();
 
     if (value) { // if validation fails, value will be null
-      fetch("http://localhost:8080/family/create", {
-        method: "POST",
+      fetch('http://localhost:8080/family/create', {
+        method: 'POST',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
@@ -56,11 +56,11 @@ export default class createFamily extends Component {
       .then( response => response.json())
       .then( responseData => {
         this._onValueChange(STORAGE_KEY, responseData.id_token);
-        AlertIOS.alert("Signup Successful!",
-                       "Family Key: " + responseData.family_key);
+        AlertIOS.alert('Signup Successful!',
+                       'Family Key: ' + responseData.family_key);
       })
       .catch( err => {
-        console.log("Signup error: " + err);
+        AlertIOS.alert('That username is already taken.', err.message);
       })
       .done();
     }
@@ -71,7 +71,7 @@ export default class createFamily extends Component {
       <View style={styles.container}>
         <View style={styles.row}>
           <Form
-            ref="form"
+            ref='form'
             type={Person}
             options={options}
           />
