@@ -40,8 +40,8 @@ export default class Login extends Component {
     let value = this.refs.form.getValue();
 
     if (value) { // if validation fails, value will be null
-      fetch("http://localhost:8080/sessions/create", {
-        method: "POST",
+      fetch('http://localhost:8080/sessions/create', {
+        method: 'POST',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
@@ -54,10 +54,10 @@ export default class Login extends Component {
       .then( response => response.json())
       .then( responseData => {
         this._onValueChange(STORAGE_KEY, responseData.id_token);
-        AlertIOS.alert("Login Successful!");
+        AlertIOS.alert('Login Successful!');
       })
       .catch( err => {
-        console.log("Login error: " + err);
+        console.log('Login error: ' + err);
       })
       .done();
     }
@@ -71,7 +71,7 @@ export default class Login extends Component {
         </View>
         <View style={styles.row}>
           <Form
-            ref="form"
+            ref='form'
             type={Person}
             options={options}
           />
