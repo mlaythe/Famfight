@@ -1,6 +1,5 @@
 const express = require('express'),
       _       = require('lodash'),
-      config  = require('./config'),
       jwt     = require('jsonwebtoken'),
       userController = require('./users/userController'),
       tokenController = require('./util/tokenController');
