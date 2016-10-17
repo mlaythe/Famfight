@@ -1,17 +1,17 @@
 'use strict';
-const Sequelize = require('Sequelize');
 
-const privateKey = require('./config').dbKey;
+const knex = require('knex')({
+  client: 'pg',
+  connection: '',
+  pool: {
+    min: 1,
+    max: 7
+  }
+});
 
-const sequelize = new Sequelize(privateKey);
+const bookshelf = require('bookshelf')(knex);
 
-sequelize
-  .authenticate()
-  .then( () => {
-    console.log('Connected to database.');
-  })
-  .catch( err => {
-    console.log('Unable to connect to database:', err.message);
-  });
-
-module.exports = sequelize;
+module.exports = {
+  knex,
+  bookshelf
+};
