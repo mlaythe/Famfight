@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
-const config = require('config');
+const webpackConfig = require('../webpack.config');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 
@@ -23,8 +23,8 @@ app.use(require('./user-routes'));
 
 app.listen(PORT, err => console.log('listening on http://localhost:' + PORT));
 
-new WebpackDevServer(webpack(config), {
-  publicPath: config.output.publicPath,
+new WebpackDevServer(webpack(webpackConfig), {
+  publicPath: webpackConfig.output.publicPath,
   hot: true,
   noInfo: true,
   historyApiFallback: true,
