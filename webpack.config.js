@@ -20,23 +20,16 @@ module.exports = {
     extensions: ['', '.js', '.jsx'],
   },
   module: {
-    loaders: [{
-      test: /\.js?$/,
-      loaders: ['react-hot', 'babel-loader'],
-      exclude: /node_modules/,
-    },
-    {
-      test: /\.css$/,
-      loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
-    },
-    {
-      test: /\.sass$|\.scss$/,
-      loaders: [
-        'style?sourceMap',
-        'css?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]',
-        'sass?sourceMap',
-      ],
-    },
+    loaders: [
+      {
+        test: /\.js?$/,
+        loaders: ['react-hot', 'babel-loader'],
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.sass$|\.scss$/,
+        loaders: ['style', 'css', 'sass'] 
+      },
     ],
   },
   plugins: [
