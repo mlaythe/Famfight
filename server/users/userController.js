@@ -11,9 +11,7 @@ const userController = {};
 userController.createTable = () => {
   return knex.schema.createTableIfNotExists('users', user => {
     user.increments();
-    user.string('name');
-    user.string('emailID');
-    user.string('email');
+    user.string('username');
     user.string('password');
   });
 };
@@ -37,41 +35,40 @@ userController.authenticateUser = (req, res, next) => {
 };
 
 userController.createUser = (req, res, next) => {
-  if (!req.body.name || !req.body.email || !req.body.password) {
-    return res.status(401).send('Missing name, email, or password!');
-  }
+  // if (!req.body.name || !req.body.email || !req.body.password) {
+  //   return res.status(401).send('Missing name, email, or password!');
+  // }
 
   userController.createTable()
     .then(() => {
       User
-        .query({where: {email: req.body.email}})
+        .query({where: {username: req.body.username}})
         .fetch()
         .then(model => {
           if (model) {
             return res.status(400).send('Username is already taken.');
           }
-
-          userController.createEmailID(req.body);
+          console.log('before decrypt', req.body);
           userController.encryptPassword(req.body);
 
           User.forge(req.body).save().then(result => {
             return res.status(201).send({
-              id_token: tokenController.createToken(result.attributes, req.body.email)
+              id_token: tokenController.createToken(result.attributes, req.body.username)
             });
           });
         });
     })
     .catch(err => {
-      return res.status(400).send('Error adding user to database');
+      return res.status(400).send('Error adding user to database: ', err.message);
     });
 };
 
-userController.createEmailID = user => {
-  const ID = (Math.random().toString(36) + '00000000000000000').slice(2, 5 + 2);
-  const indexOfAt = user.email.indexOf('@');
+// userController.createUsernameID = user => {
+//   const ID = (Math.random().toString(36) + '00000000000000000').slice(2, 5 + 2);
+//   const indexOfAt = user.email.indexOf('@');
 
-  user.emailID = user.email.slice(0, indexOfAt) + ID;
-};
+//   user.emailID = user.email.slice(0, indexOfAt) + ID;
+// };
 
 userController.encryptPassword = user => {
   const salt = bcrypt.genSaltSync(SALT_FACTOR);
