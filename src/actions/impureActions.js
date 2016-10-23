@@ -4,10 +4,10 @@ import { emptySignupFieldAction } from './signupActions.js';
 
 axios.defaults.adapter = require('axios/lib/adapters/http');
 
-export function fetchUserInfoAction(username, password) {
+export function createUserInfoAction(username, password) {
   return function (dispatch) {
     dispatch(requestUserInfoAction());
-    return axios.post('http://localhost:8080/user/login', { username, password })
+    return axios.post('http://localhost:8080/user/signup', { username, password })
       .then((response) => {
         dispatch(receiveUserInfoAction(response.data.events));
       })
@@ -24,11 +24,9 @@ export function fetchUserInfoAction(username, password) {
 }
 
 export function submitSignupAction(username, password) {
-  console.log(username);
-  console.log('pass', password);
   return function (dispatch) {
     if (username && password) {
-      dispatch(fetchUserInfoAction(username, password));
+      dispatch(createUserInfoAction(username, password));
     } else {
       dispatch(emptySignupFieldAction());
     }
