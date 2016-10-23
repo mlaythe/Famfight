@@ -1,14 +1,17 @@
 const express = require('express'),
       _       = require('lodash'),
       jwt     = require('jsonwebtoken'),
-      userController = require('./users/userController'),
+      userController = require('./users/userController.js'),
+      familyController = require('./families/familyController'),
       tokenController = require('./util/tokenController');
 
 const app = module.exports = express.Router();
 
-app.post('/family/create', userController.createFamily);
+app.post('/user/signup', userController.createUser);
 
-app.post('/family/join', userController.joinFamily);
+app.post('/family/create', familyController.createFamily);
+
+app.post('/family/join', familyController.joinFamily);
 
 app.post('/sessions/create', function(req, res) {
   if (!req.body.username || !req.body.password) {
