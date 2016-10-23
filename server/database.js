@@ -1,8 +1,9 @@
 'use strict';
+const config = require('config');
 
 const knex = require('knex')({
   client: 'pg',
-  connection: '',
+  connection: config.get('db-url'),
   pool: {
     min: 1,
     max: 7
