@@ -5,7 +5,7 @@
   "scripts": {
     "build": "webpack --progress --colors --config  webpack.config.js --watch",
     "server-test": "BABEL_DISABLE_CACHE=1 export NODE_ENV=test && node test/Endpoints-Test.js | tap-spec ",
-    "start-dev": "export NODE_ENV=test && forever -w server/start.js",
+    "start-dev": "BABEL_DISABLE_CACHE=1 export NODE_ENV=test && forever -w server/start.js",
     "test": "BABEL_DISABLE_CACHE=1 NODE_ENV=test mocha test/.setup.js test/**/*-Test.js && npm run server-test"
   },
   "dependencies": {
