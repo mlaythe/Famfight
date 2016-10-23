@@ -1,76 +1,86 @@
-const tokenController = require('../util/tokenController'),
-      Users = require('./userModel');
+'use strict';
+const bookshelf = require('../database').bookshelf;
+const knex = require('../database').knex;
+const User = require('./userModel');
+const tokenController = require('../util/tokenController');
+const bcrypt = require('bcrypt');
 
+const SALT_FACTOR = 10;
 const userController = {};
 
-userController.createFamily = (req, res, next) => {
-  if (!req.body.username || !req.body.password || !req.body.familyName) {
-    return res.status(400).send('Missing username or password or family name.');
-  }
-
-  Users.sync().then( () => {
-    Users.findOne({
-      where: {
-        username: req.body.username
-      }
-    })
-    .then( result => {
-      if (result !== null) {
-        return res.status(400).send('That username is already taken.');
-      }
-
-      let familyKey = tokenController.createFamilyKey(req.body);
-
-      userController.createUser(req.body, familyKey, true);
-
-      res.status(201).send({
-        id_token: tokenController.createAdminToken(req.body, familyKey),
-        family_key: familyKey
-      });
-    })
-    .catch( err => {
-      console.log('Error finding username in db:', err.message);
-    });
+userController.createTable = () => {
+  return knex.schema.createTableIfNotExists('users', user => {
+    user.increments();
+    user.string('name');
+    user.string('emailID');
+    user.string('email');
+    user.string('password');
   });
 };
 
-userController.joinFamily = (req, res, next) => {
-  if (!req.body.username || !req.body.password || !req.body.familyKey) {
-    return res.status(400).send('Missing username or password or family key.');
-  }
-
-  Users.sync().then( () => {
-    Users.findOne({
-      where: {
-        familyKey: req.body.familyKey
-      }
-    })
-    .then( result => {
-      if (result === null) {
-        return res.status(400).send('Invalid family key.');
+userController.authenticateUser = (req, res, next) => {
+  User
+    .query({where: {email: req.body.email}})
+    .fetch()
+    .then(model => {
+      if (!model) {
+        return res.status(400).send('Invalid email');
       }
 
-      userController.createUser(req.body, req.body.familyKey, false);
-
-      res.status(201).send({
-        id_token: tokenController.createToken(req.body, familyKey)
-      });
+      const isValidUser = userController.decryptPassword(req.body, model.attributes.password, res);
+      
+      return isValidUser ? next() : res.status(401).send('Password does not match our records.');
     })
-    .catch( err => {
-      console.log('Error finding family with that key:', err.message);
+    .catch(err => {
+      return res.status(400).send('Error authenticating user.');
     });
-  });
 };
 
-userController.createUser = (profile, familyKey, isAdmin) => {
-  const user = {
-      familyKey: familyKey,
-      username: profile.username,
-      password: profile.password,
-      adminFlag: isAdmin
-  };
+userController.createUser = (req, res, next) => {
+  if (!req.body.name || !req.body.email || !req.body.password) {
+    return res.status(401).send('Missing name, email, or password!');
+  }
 
-  Users.create(user);
+  userController.createTable()
+    .then(() => {
+      User
+        .query({where: {email: req.body.email}})
+        .fetch()
+        .then(model => {
+          if (model) {
+            return res.status(400).send('Username is already taken.');
+          }
+
+          userController.createEmailID(req.body);
+          userController.encryptPassword(req.body);
+
+          User.forge(req.body).save().then(result => {
+            return res.status(201).send({
+              id_token: tokenController.createToken(result.attributes, req.body.email)
+            });
+          });
+        });
+    })
+    .catch(err => {
+      return res.status(400).send('Error adding user to database');
+    });
+};
+
+userController.createEmailID = user => {
+  const ID = (Math.random().toString(36) + '00000000000000000').slice(2, 5 + 2);
+  const indexOfAt = user.email.indexOf('@');
+
+  user.emailID = user.email.slice(0, indexOfAt) + ID;
+};
+
+userController.encryptPassword = user => {
+  const salt = bcrypt.genSaltSync(SALT_FACTOR);
+  const hash = bcrypt.hashSync(user.password, salt);
+  user.password = hash;
+};
+
+userController.decryptPassword = (user, password, res) => {
+  return bcrypt.compareSync(user.password, password);
 };
 
 module.exports = userController;
