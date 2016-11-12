@@ -25,7 +25,7 @@ const Signup = ({ signupFunctions }) => {
           handleChangeFn={updateUserPassword}
         />
         <RectangleButton
-          text='Log In'
+          text='Signup'
           type='submit'
           handleClick={submitSignupForm}
         />
