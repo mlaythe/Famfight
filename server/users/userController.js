@@ -42,13 +42,13 @@ userController.createUser = (req, res, next) => {
   userController.createTable()
     .then(() => {
       User
-        .query({where: {username: req.body.username}})
+        .query({where: { username: req.body.username }})
         .fetch()
         .then(model => {
           if (model) {
             return res.status(400).send('Username is already taken.');
           }
-          console.log('before decrypt', req.body);
+        
           userController.encryptPassword(req.body);
 
           User.forge(req.body).save().then(result => {
