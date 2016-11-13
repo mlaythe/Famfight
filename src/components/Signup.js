@@ -3,14 +3,18 @@ import FormInput from './FormInput.js';
 import RectangleButton from './RectangleButton.js';
 import ErrorMessage from './ErrorMessage.js';
 
-const Signup = ({ signupFunctions }) => {
+const Signup = ({ signupFunctions, errorMessage }) => {
 
   const { updateUsername, updateUserPassword, submitSignupForm } = signupFunctions;
-  // const { errorMsgID, errorMsgText } = errorMessage;
+  const { errorMsgID, errorMsgText } = errorMessage;
 
   return (
     <div>
       <h1>Signup</h1>
+      <ErrorMessage
+        errorMsgID={errorMsgID}
+        errorMsgText={errorMsgText}
+      />
       <form>
         <FormInput
           inputType='username'
@@ -36,7 +40,7 @@ const Signup = ({ signupFunctions }) => {
 
 Signup.propTypes = {
   signupFunctions: PropTypes.object,
-  // errorMessage: PropTypes.object,
+  errorMessage: PropTypes.object,
 };
 
 export default Signup;
