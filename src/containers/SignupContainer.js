@@ -13,7 +13,7 @@ class SignupContainer extends React.Component {
     this.updateUsername = this.updateUsername.bind(this);
     this.updateUserPassword = this.updateUserPassword.bind(this);
     this.submitSignupForm = this.submitSignupForm.bind(this);
-    // this.displayErrorMessage = this.displayErrorMessage.bind(this);
+    this.displayErrorMessage = this.displayErrorMessage.bind(this);
   }
 
   updateUsername(event) {
@@ -31,23 +31,19 @@ class SignupContainer extends React.Component {
     this.props.impureActions.submitSignupAction(this.props.userState.username, this.props.userState.password);
   }
 
-  // displayErrorMessage() {
-  //   if (this.props.events.errorFetching) {
-  //     return {
-  //       errorMsgID: 'signupError',
-  //       errorMsgText: 'Incorrect username address or password',
-  //     };
-  //   } else if (this.props.userState.emptySignupField) {
-  //     return {
-  //       errorMsgID: 'emptySignupInputError',
-  //       errorMsgText: 'All fields are required',
-  //     };
-  //   }
-  //   return {
-  //     errorMsgID: 'noError',
-  //     errorMsgText: '',
-  //   };
-  // }
+  displayErrorMessage() {
+    if (this.props.userState.emptySignupField) {
+      return {
+        errorMsgID: 'emptySignupInputError',
+        errorMsgText: 'All fields are required',
+      };
+    } else {
+      return {
+        errorMsgID: 'noError',
+        errorMsgText: '',
+      };
+    }
+  }
 
   render() {
     const signupFunctions = {
@@ -56,11 +52,11 @@ class SignupContainer extends React.Component {
       submitSignupForm: this.submitSignupForm,
     };
 
-    // const error = this.displayErrorMessage();
+    const error = this.displayErrorMessage();
 
     return (
       <div>
-        <Signup signupFunctions={signupFunctions} />
+        <Signup signupFunctions={signupFunctions} errorMessage={error}  />
       </div>
     );
   }
@@ -68,7 +64,7 @@ class SignupContainer extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    userState: state.userState,
+    userState: state.reducers.userState,
     events: state.events,
   };
 }
