@@ -20,6 +20,10 @@ if (process.env.NODE_ENV === 'test') {
   app.use(logger('dev'));
 }
 
+app.get('/*', (req,res) => {
+  res.sendfile(path.join(__dirname, 'index.html'))
+});
+
 app.use(require('./user-routes'));
 app.use(require('./protected-routes'));
 
