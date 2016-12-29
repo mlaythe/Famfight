@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { requestUserInfoAction, receiveUserInfoAction, failureUserInfoAction } from './fetchEventActions.js';
-import { emptySignupFieldAction } from './signupActions.js';
+import { signupErrorAction } from './signupActions.js';
 import { browserHistory } from 'react-router';
 
 axios.defaults.adapter = require('axios/lib/adapters/http');
@@ -13,6 +13,7 @@ export function createUserInfoAction(username, password) {
           throw new Error('Error signing up user.');
         }
 
+        localStorage.setItem('token', response.data.id_token);
         browserHistory.push('/home');
       })
       .catch((error) => {
@@ -29,11 +30,25 @@ export function createUserInfoAction(username, password) {
 
 export function submitSignupAction(username, password) {
   return function (dispatch) {
-    if (username && password) {
-      dispatch(createUserInfoAction(username, password));
+    if (!username && !password) {
+      dispatch(signupErrorAction({
+        errorMsgID: 'emptyUsernamePasswordFieldError',
+        errorMsgText: 'Missing username and password',
+      }));
+    } else if (!username) {
+      dispatch(signupErrorAction({
+        errorMsgID: 'emptyUsernameFieldError',
+        errorMsgText: 'Missing username',
+      }));
+    } else if (!password) {
+      dispatch(signupErrorAction({
+        errorMsgID: 'emptyPasswordFieldError',
+        errorMsgText: 'Missing password',
+      }));
     } else {
-      dispatch(emptySignupFieldAction());
+      dispatch(createUserInfoAction(username, password));
     }
+
     return;
   };
 }
