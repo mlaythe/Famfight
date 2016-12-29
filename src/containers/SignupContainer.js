@@ -32,17 +32,7 @@ class SignupContainer extends React.Component {
   }
 
   displayErrorMessage() {
-    if (this.props.userState.emptySignupField) {
-      return {
-        errorMsgID: 'emptySignupInputError',
-        errorMsgText: 'All fields are required',
-      };
-    } 
-    
-    return {
-      errorMsgID: 'noError',
-      errorMsgText: '',
-    };
+    return this.props.userState.error || { errorMsgID: 'noError', errorMsgText: '' };
   }
 
   render() {
