@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import Signup from './../components/Signup.js';
 import * as signupActions from './../actions/signupActions.js';
 import * as impureActions from './../actions/impureActions.js';
@@ -47,6 +48,7 @@ class SignupContainer extends React.Component {
     return (
       <div>
         <Signup signupFunctions={signupFunctions} errorMessage={error}  />
+        <Link to='/login'></Link>
       </div>
     );
   }
