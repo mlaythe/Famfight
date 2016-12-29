@@ -16,7 +16,7 @@ export function passwordInputAction(input) {
 
 export function signupErrorAction(input) {
   return {
-    type: types.SIGNUP_ERROR,
+    type: types.ERROR,
     error: input,
   };
 }
