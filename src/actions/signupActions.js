@@ -14,8 +14,9 @@ export function passwordInputAction(input) {
   };
 }
 
-export function emptySignupFieldAction() {
+export function signupErrorAction(input) {
   return {
-    type: types.EMPTY_SIGNUP_FIELD,
+    type: types.SIGNUP_ERROR,
+    error: input,
   };
 }
