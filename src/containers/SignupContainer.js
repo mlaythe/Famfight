@@ -48,7 +48,7 @@ class SignupContainer extends React.Component {
     return (
       <div>
         <Signup signupFunctions={signupFunctions} errorMessage={error}  />
-        <Link to='/login'></Link>
+        <Link to='/login'>Login</Link>
       </div>
     );
   }
