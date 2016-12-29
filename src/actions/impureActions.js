@@ -8,7 +8,7 @@ axios.defaults.adapter = require('axios/lib/adapters/http');
 
 export function createUserInfoAction(username, password) {
   return function (dispatch) {
-    return axios.post('http://localhost:8080/user/signup', { username, password })
+    return axios.post('http://localhost:8080/users/signup', { username, password })
       .then((response) => {
         if (!response.data.id_token) {
           throw new Error('Error signing up user.');
@@ -31,7 +31,7 @@ export function createUserInfoAction(username, password) {
 
 export function loginUserAction(username, password) {
   return function (dispatch) {
-    return axios.post('http://localhost:8080/user/login', { username, password })
+    return axios.post('http://localhost:8080/users/login', { username, password })
       .then((response) => {
         if (!response.data.id_token) {
           throw new Error('Error logging in user.');
