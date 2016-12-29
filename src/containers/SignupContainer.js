@@ -37,12 +37,12 @@ class SignupContainer extends React.Component {
         errorMsgID: 'emptySignupInputError',
         errorMsgText: 'All fields are required',
       };
-    } else {
-      return {
-        errorMsgID: 'noError',
-        errorMsgText: '',
-      };
-    }
+    } 
+    
+    return {
+      errorMsgID: 'noError',
+      errorMsgText: '',
+    };
   }
 
   render() {
