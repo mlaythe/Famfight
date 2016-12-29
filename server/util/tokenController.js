@@ -11,10 +11,9 @@ tokenController.createAdminToken = (user, key) => {
   return jwt.sign(user, config.get('secret'), { expiresIn: 60 * 60 * 5 });
 };
 
-tokenController.createToken = (user, key) => {
+tokenController.createToken = (user) => {
   user = _.omit(user, 'password');
   user.admin = false;
-  user.key = key;
   return jwt.sign(user, config.get('secret'), { expiresIn: 60 * 60 * 5 });
 };
 
