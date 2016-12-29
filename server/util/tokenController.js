@@ -18,7 +18,7 @@ tokenController.createToken = (user) => {
 };
 
 tokenController.createFamilyKey = user => {
-  let id = (Math.random().toString(36) + '00000000000000000').slice(2, 5 + 2);
+  const id = (Math.random().toString(36) + '00000000000000000').slice(2, 5 + 2);
 
   return user.familyName + id;
 };
