@@ -1,4 +1,4 @@
-const tokenController = require('../util/tokenController');
+const authUtils = require('../utils/authUtils');
 const Family = require('./familyModel');
 
 const familyController = {};
@@ -19,12 +19,12 @@ familyController.createFamily = (req, res, next) => {
         return res.status(400).send('That username is already taken.');
       }
 
-      let familyKey = tokenController.createFamilyKey(req.body);
+      let familyKey = authUtils.createFamilyKey(req.body);
 
       familyController.createUser(req.body, familyKey, true);
 
       res.status(201).send({
-        id_token: tokenController.createAdminToken(req.body, familyKey),
+        id_token: authUtils.createAdminToken(req.body, familyKey),
         family_key: familyKey
       });
     })
@@ -53,7 +53,7 @@ familyController.joinFamily = (req, res, next) => {
       familyController.createUser(req.body, req.body.familyKey, false);
 
       res.status(201).send({
-        id_token: tokenController.createToken(req.body, familyKey)
+        id_token: authUtils.createToken(req.body, familyKey)
       });
     })
     .catch((err) => {

@@ -1,7 +1,7 @@
 'use strict';
 const { bookshelf, knex } = require('../database');
 const User = require('./userModel');
-const tokenController = require('../util/tokenController');
+const authUtils = require('../utils/authUtils');
 const bcrypt = require('bcrypt');
 
 const SALT_FACTOR = 10;
@@ -48,7 +48,7 @@ userController.createUser = (req, res, next) => {
 
           User.forge(req.body).save().then((result) => {
             return res.status(201).send({
-              id_token: tokenController.createToken(result.attributes),
+              id_token: authUtils.createToken(result.attributes),
             });
           });
         });
