@@ -24,8 +24,7 @@ app.get('/*', (req,res) => {
   res.sendfile(path.join(__dirname, 'index.html'))
 });
 
-app.use(require('./user-routes'));
-app.use(require('./protected-routes'));
+app.use(require('./routes/userRoutes'));
 
 app.listen(PORT, err => console.log('listening on http://localhost:' + PORT));
 
