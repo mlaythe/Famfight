@@ -1,8 +1,18 @@
-'use strict';
-const { bookshelf, knex } = require('./../database');
+const Sequelize = require('sequelize');
+const sequelize = require('../database');
 
-const User = bookshelf.Model.extend({
-  tableName: 'users'
+const User = sequelize.define('user', {
+  username: Sequelize.STRING,
+  password: Sequelize.STRING,
+}, {
+  indexes: [
+    {
+      unique: true,
+      fields: ['username']
+    },
+  ],
 });
+
+User.sync();
 
 module.exports = User;
