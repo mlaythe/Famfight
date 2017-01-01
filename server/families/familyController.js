@@ -1,5 +1,6 @@
 const authUtils = require('../utils/authUtils');
 const Family = require('./familyModel');
+const familyUser = require('./familyUserModel');
 
 const familyController = {};
 
