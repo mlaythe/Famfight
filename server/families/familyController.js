@@ -1,5 +1,5 @@
 const tokenController = require('../util/tokenController');
-const Families = require('./familyModel');
+const Family = require('./familyModel');
 
 const familyController = {};
 
@@ -8,8 +8,8 @@ familyController.createFamily = (req, res, next) => {
     return res.status(400).send('Missing username or password or family name.');
   }
 
-  Families.sync().then(() => {
-    Families.findOne({
+  Family.sync().then(() => {
+    Family.findOne({
       where: {
         username: req.body.username
       }
@@ -39,8 +39,8 @@ familyController.joinFamily = (req, res, next) => {
     return res.status(400).send('Missing username or password or family key.');
   }
 
-  Families.sync().then(() => {
-    Families.findOne({
+  Family.sync().then(() => {
+    Family.findOne({
       where: {
         familyKey: req.body.familyKey
       }
@@ -70,7 +70,7 @@ familyController.createUser = (profile, familyKey, isAdmin) => {
       adminFlag: isAdmin
   };
 
-  Families.create(user);
+  Family.create(user);
 };
 
 module.exports = familyController;
