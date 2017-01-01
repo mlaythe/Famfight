@@ -25,6 +25,7 @@ app.get('/*', (req,res) => {
 });
 
 app.use(require('./routes/userRoutes'));
+app.use(require('./routes/familyRoutes'));
 
 app.listen(PORT, (err) => console.log('listening on http://localhost:' + PORT));
 
