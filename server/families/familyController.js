@@ -1,5 +1,5 @@
-const tokenController = require('../util/tokenController'),
-      Families = require('./familyModel');
+const tokenController = require('../util/tokenController');
+const Families = require('./familyModel');
 
 const familyController = {};
 

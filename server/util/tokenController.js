@@ -1,6 +1,6 @@
-const _ = require('lodash'),
-      jwt = require('jsonwebtoken'),
-      config  = require('config');
+const _ = require('lodash');
+const jwt = require('jsonwebtoken');
+const config  = require('config');
       
 const tokenController = {};
 

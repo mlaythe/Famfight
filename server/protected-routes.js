@@ -1,6 +1,6 @@
-const express = require('express'),
-      jwt     = require('express-jwt'),
-      config  = require('config');
+const express = require('express');
+const jwt = require('express-jwt');
+const config = require('config');
 
 const app = module.exports = express.Router();
 

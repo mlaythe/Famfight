@@ -1,9 +1,7 @@
-const express = require('express'),
-      _       = require('lodash'),
-      jwt     = require('jsonwebtoken'),
-      userController = require('./users/userController.js'),
-      familyController = require('./families/familyController'),
-      tokenController = require('./util/tokenController');
+const express = require('express');
+const userController = require('./users/userController.js');
+const familyController = require('./families/familyController');
+const tokenController = require('./util/tokenController');
 
 const app = module.exports = express.Router();
 
