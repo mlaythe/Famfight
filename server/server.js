@@ -26,7 +26,7 @@ app.get('/*', (req,res) => {
 
 app.use(require('./routes/userRoutes'));
 
-app.listen(PORT, err => console.log('listening on http://localhost:' + PORT));
+app.listen(PORT, (err) => console.log('listening on http://localhost:' + PORT));
 
 new WebpackDevServer(webpack(webpackConfig), {
   publicPath: webpackConfig.output.publicPath,
