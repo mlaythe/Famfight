@@ -1,18 +1,22 @@
 'use strict';
+
+const fs = require('fs');
+const path = require('path');
 const config = require('config');
+const Sequelize = require('sequelize');
+let sequelize;
 
-const knex = require('knex')({
-  client: 'pg',
-  connection: config.get('db-url'),
-  pool: {
-    min: 1,
-    max: 7
-  }
-});
+try {
+  sequelize = new Sequelize(config.get('db-url'), {
+    logging: false,
+  });
+} catch(err) {
+  console.error(err);
+}
 
-const bookshelf = require('bookshelf')(knex);
+sequelize.authenticate().then(() => {
+  console.log('Successfully connected to database!');
+})
+.catch((err) => console.error(err));
 
-module.exports = {
-  knex,
-  bookshelf
-};
+module.exports = sequelize;
