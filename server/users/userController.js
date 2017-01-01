@@ -19,7 +19,13 @@ userController.authenticateUser = (req, res, next) => {
 
     const isValidUser = userController.decryptPassword(req.body, user.dataValues.password);
 
-    return isValidUser ? next() : res.status(401).send('Incorrect credentials.');
+    if (isValidUser) {
+      return res.status(200).send({
+        id_token: authUtils.createToken(user.dataValues),
+      });
+    }
+
+    return res.status(401).send('Incorrect credentials.');
   })
   .catch((err) => console.error(err));
 };
