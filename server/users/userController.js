@@ -1,5 +1,4 @@
 'use strict';
-const { bookshelf, knex } = require('../database');
 const User = require('./userModel');
 const authUtils = require('../utils/authUtils');
 const bcrypt = require('bcrypt');
