@@ -14,7 +14,7 @@ familyController.createFamily = (req, res, next) => {
         username: req.body.username
       }
     })
-    .then(result => {
+    .then((result) => {
       if (result !== null) {
         return res.status(400).send('That username is already taken.');
       }
@@ -28,7 +28,7 @@ familyController.createFamily = (req, res, next) => {
         family_key: familyKey
       });
     })
-    .catch(err => {
+    .catch((err) => {
       console.log('Error finding username in db:', err.message);
     });
   });
@@ -45,7 +45,7 @@ familyController.joinFamily = (req, res, next) => {
         familyKey: req.body.familyKey
       }
     })
-    .then(result => {
+    .then((result) => {
       if (result === null) {
         return res.status(400).send('Invalid family key.');
       }
@@ -56,7 +56,7 @@ familyController.joinFamily = (req, res, next) => {
         id_token: tokenController.createToken(req.body, familyKey)
       });
     })
-    .catch(err => {
+    .catch((err) => {
       console.log('Error finding family with that key:', err.message);
     });
   });
