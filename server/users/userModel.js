@@ -1,6 +1,5 @@
 'use strict';
-const bookshelf = require('./../database').bookshelf;
-const knex = require('./../database').knex;
+const { bookshelf, knex } = require('./../database');
 
 const User = bookshelf.Model.extend({
   tableName: 'users'
