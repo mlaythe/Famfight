@@ -114,4 +114,62 @@ describe('POST /users/login', () => {
         done();
       });
   });
+
+  it('should not allow login when missing username', (done) => {
+    request(app)
+      .post('/users/login')
+      .send({
+        password: faker.internet.password(),
+      })
+      .expect(400)
+      .end((err, res) => {
+        if (err) throw err;
+        expect(res.body.id_token).to.not.exist;
+        done();
+      });
+  });
+
+  it('should not allow login when missing password', (done) => {
+    request(app)
+      .post('/users/login')
+      .send({
+        username: faker.internet.userName(),
+      })
+      .expect(400)
+      .end((err, res) => {
+        if (err) throw err;
+        expect(res.body.id_token).to.not.exist;
+        done();
+      });
+  });
+
+  it('should not allow login when username is shorter than 4 characters', (done) => {
+    request(app)
+      .post('/users/login')
+      .send({
+        username: 'we2',
+        password: faker.internet.password(),
+      })
+      .expect(400)
+      .end((err, res) => {
+        if (err) throw err;
+        expect(res.body.id_token).to.not.exist;
+        done();
+      });
+  });
+
+  it('should not allow login when password is shorter than 4 characters', (done) => {
+    request(app)
+      .post('/users/login')
+      .send({
+        username: 'mlaythe',
+        password: 'we2',
+      })
+      .expect(400)
+      .end((err, res) => {
+        if (err) throw err;
+        expect(res.body.id_token).to.not.exist;
+        done();
+      });
+  });
 });
